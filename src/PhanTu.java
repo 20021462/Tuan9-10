@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PhanTu<T> implements ComparableGreater<T> {
+public class PhanTu<T extends Comparable<T>> {
     private T value;
 
     public PhanTu(T value) {
@@ -21,21 +21,24 @@ public class PhanTu<T> implements ComparableGreater<T> {
         this.value = value;
     }
 
+    public boolean isGreaterThan(T that) {
+        return value.compareTo(that) > 0;
+    }
+
     public static void main(String[] args) {
         String path = args[0];
-        List<PhanTu> list = new ArrayList<>();
+        List<PhanTu<Integer>> list = new ArrayList<>();
         try {
             File input = new File(path);
             Scanner scanner = new Scanner(input);
             while (scanner.hasNextLine()) {
                 Integer data = scanner.nextInt();
-                list.add(new PhanTu(data));
+                list.add(new PhanTu<Integer>(data));
             }
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        list.sort();
         try {
             File file = new File("output.txt");
             file.createNewFile();
